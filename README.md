@@ -4,7 +4,7 @@ A production-ready demo application showcasing the [Subscrypts React SDK](https:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Subscrypts/react-sdk-demo)
 
-> ✨ **Now using SDK v1.0.2** - All contract addresses pre-configured! Zero additional setup needed.
+> ✨ **Built with the latest Subscrypts React SDK** - All contract addresses pre-configured! Zero additional setup needed.
 
 ## 🚀 Quick Start
 
