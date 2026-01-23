@@ -11,6 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       enableWalletManagement={true}
       network="arbitrum"
       balanceRefreshInterval={30000}
+      debug="debug"
     >
       <App />
     </SubscryptsProvider>
