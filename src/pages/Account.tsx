@@ -19,6 +19,7 @@
 import { useWallet, useTokenBalance, useMySubscriptions } from '@subscrypts/react-sdk';
 import { Link, Navigate } from 'react-router-dom';
 import { DEMO_PLANS } from '../config/plans';
+import { useEffect } from 'react';
 
 function Account() {
   const { isConnected, address, disconnect } = useWallet();
@@ -31,6 +32,27 @@ function Account() {
     isLoading: subsLoading2,
     error: subsError,
   } = useMySubscriptions(address || undefined, 10);
+
+  // Debug logging to diagnose subscription detection issues
+  useEffect(() => {
+    console.log('[Account Debug] Wallet address:', address);
+    console.log('[Account Debug] useMySubscriptions loading:', subsLoading2);
+    console.log('[Account Debug] useMySubscriptions error:', subsError);
+    console.log('[Account Debug] useMySubscriptions subscriptions:', subscriptions);
+    console.log('[Account Debug] Subscriptions count:', subscriptions.length);
+    if (subscriptions.length > 0) {
+      subscriptions.forEach((sub, i) => {
+        console.log(`[Account Debug] Subscription ${i}:`, {
+          id: sub.id.toString(),
+          planId: sub.planId,
+          subscriber: sub.subscriber,
+          nextPaymentDate: sub.nextPaymentDate,
+          isAutoRenewing: sub.isAutoRenewing,
+          remainingCycles: sub.remainingCycles,
+        });
+      });
+    }
+  }, [address, subscriptions, subsLoading2, subsError]);
 
   // Redirect to home if wallet not connected
   if (!isConnected) {
@@ -62,6 +84,29 @@ function Account() {
   return (
     <div className="bg-gray-50 py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Debug Info */}
+        <div className="mb-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800">
+                Debug Information (Production Testing)
+              </h3>
+              <div className="mt-2 text-xs font-mono text-yellow-700 space-y-1">
+                <div>Wallet Address: {address || 'Not connected'}</div>
+                <div>Loading: {String(subsLoading2)}</div>
+                <div>Error: {subsError?.message || 'None'}</div>
+                <div>Subscriptions Found: {subscriptions.length}</div>
+                <div>Query Address: {address ? `${address.substring(0, 10)}...${address.substring(address.length - 8)}` : 'undefined'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Developer Note - SDK v1.4.0 Implementation */}
         <div className="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded">
           <div className="flex items-start">
